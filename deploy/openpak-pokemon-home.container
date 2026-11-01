@@ -1,0 +1,30 @@
+# Quadlet for pokemon-home. Copy to ~/.config/containers/systemd/, run ~/openpak/deploy/pin-ips.sh --apply,
+# then systemctl --user daemon-reload && systemctl --user start openpak-pokemon-home.
+# Wants (not Requires) nx-baas and global-link: restarting them must not restart this.
+[Unit]
+Description=OpenPak Pokemon HOME (account-bound boxes, Pokedex, GTS, Wonder Box, Room trade)
+Wants=openpak-nx-baas.service openpak-pokemon-global-link.service openpak-pokemon-legality.service openpak-postgres.service
+After=openpak-postgres.service openpak-pokemon-legality.service openpak-pokemon-global-link.service
+
+[Container]
+ContainerName=openpak-pokemon-home
+Image=ghcr.io/openpak/pokemon-home:latest
+AutoUpdate=registry
+Network=openpak.network
+# Loopback only: the website proxies; a public hostname (optional) tunnels to http://localhost:20180
+PublishPort=127.0.0.1:20180:20180
+EnvironmentFile=%h/openpak/deploy/pokemon-home.env
+Environment=HOME_HTTP_ADDR=:20180
+Environment=HOME_LEGALITY_URL=http://openpak-pokemon-legality:20170
+Environment=HOME_GL_URL=http://openpak-pokemon-global-link:20160
+Environment=HOME_NX_URL=http://openpak-nx-baas:20070
+Environment=HOME_CAPTURE_DIR=/capture
+Volume=%h/openpak/deploy/pokemon-home-capture:/capture:U
+NoNewPrivileges=true
+DropCapability=all
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

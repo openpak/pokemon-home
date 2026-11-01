@@ -1,0 +1,19 @@
+# Traefik dynamic.yml snippet for the HOME hosts -- NOT APPLIED. The Switch HOME app's hosts are not
+# public (see docs/protocol.md); do not guess them. Once a DNS query log from a real console names the
+# hosts, put them in the rule below, mint the leaf (deploy/mint-leaf.sh), add the hosts to the signed
+# network profile family list, and restart nn-sssl-dns.
+# Like nx-bcat: TLS passthrough, the service terminates with an OpenPak-CA leaf (served WITH the CA).
+tcp:
+  routers:
+    pokemon-home:
+      entryPoints: [console]
+      rule: HostSNI(`REPLACE-WITH-HOME-HOST-1`) || HostSNI(`REPLACE-WITH-HOME-HOST-2`)
+      priority: 1000
+      service: pokemon-home
+      tls:
+        passthrough: true
+  services:
+    pokemon-home:
+      loadBalancer:
+        servers:
+          - address: "openpak-pokemon-home:20181"   # TLS listener: HOME_TLS_CERT, HOME_TLS_KEY
