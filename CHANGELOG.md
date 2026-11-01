@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.1 - 2026-11-01
+
+- Port block 20200 (HTTP) and 21040 (console TLS): 20180 was already taken by rewards.
+
 ## v0.1.0 - 2026-11-01
 
 - Account-bound box storage (200 x 30): deposit, move, withdraw (limbo until confirmed), restore, release;

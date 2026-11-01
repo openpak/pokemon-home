@@ -1,7 +1,7 @@
 # Deploy
 
 Quadlet `deploy/openpak-pokemon-home.container`; image `ghcr.io/openpak/pokemon-home:latest`
-(`AutoUpdate=registry`); port 20180 published on `127.0.0.1` only. Tags `v*.*.*` build the image.
+(`AutoUpdate=registry`); port 20200 published on `127.0.0.1` only. Tags `v*.*.*` build the image.
 
 ## Environment (`~/openpak/deploy/pokemon-home.env`)
 
@@ -28,11 +28,11 @@ ceiling; nn-sssl-dns is restarted after a ceiling change. For HOME the host name
 
 1. Capture the names (docs/protocol.md).
 2. `deploy/mint-leaf.sh <hosts...>` in `~/openpak/deploy` -> `keys/pokemon-home.{key,pem}`; mount them in the
-   quadlet and set `HOME_TLS_CERT`/`HOME_TLS_KEY`, publish nothing (Traefik reaches 20181 on the network).
+   quadlet and set `HOME_TLS_CERT`/`HOME_TLS_KEY`, publish nothing (Traefik reaches 21040 on the network).
 3. Put the hosts in `deploy/traefik-pokemon-home.yml` and merge it into `traefik/dynamic.yml`.
 4. Add the family to `netprofile-platforms.yml` (patch, never overwrite) and the signed ceiling; restart nn-sssl-dns.
 5. Verify off-box: `openssl s_client -connect <ip>:443 -servername <host> -alpn h2 -showcerts 2>&1` shows two
    certificates (leaf then CA).
 
 A public `*.openpak.org` name for the JSON API is not needed (the website proxies); if wanted, point a tunnel
-hostname at `http://localhost:20180`.
+hostname at `http://localhost:20200`.

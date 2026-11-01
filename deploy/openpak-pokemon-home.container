@@ -11,10 +11,10 @@ ContainerName=openpak-pokemon-home
 Image=ghcr.io/openpak/pokemon-home:latest
 AutoUpdate=registry
 Network=openpak.network
-# Loopback only: the website proxies; a public hostname (optional) tunnels to http://localhost:20180
-PublishPort=127.0.0.1:20180:20180
+# Loopback only: the website proxies; a public hostname (optional) tunnels to http://localhost:20200
+PublishPort=127.0.0.1:20200:20200
 EnvironmentFile=%h/openpak/deploy/pokemon-home.env
-Environment=HOME_HTTP_ADDR=:20180
+Environment=HOME_HTTP_ADDR=:20200
 Environment=HOME_LEGALITY_URL=http://openpak-pokemon-legality:20170
 Environment=HOME_GL_URL=http://openpak-pokemon-global-link:20160
 Environment=HOME_NX_URL=http://openpak-nx-baas:20070

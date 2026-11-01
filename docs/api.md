@@ -1,6 +1,6 @@
 # JSON API
 
-Base URL inside the network: `http://openpak-pokemon-home:20180`. All bodies are JSON; Pokemon files are
+Base URL inside the network: `http://openpak-pokemon-home:20200`. All bodies are JSON; Pokemon files are
 base64 in `data`. Ids are PKHeX ids (species, moves, abilities, items, natures). Errors are
 `{"error": "..."}`.
 

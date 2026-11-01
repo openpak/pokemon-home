@@ -16,4 +16,4 @@ tcp:
     pokemon-home:
       loadBalancer:
         servers:
-          - address: "openpak-pokemon-home:20181"   # TLS listener: HOME_TLS_CERT, HOME_TLS_KEY
+          - address: "openpak-pokemon-home:21040"   # TLS listener: HOME_TLS_CERT, HOME_TLS_KEY

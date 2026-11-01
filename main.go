@@ -73,12 +73,12 @@ func main() {
 			}
 		}
 	}()
-	srv := &http.Server{Addr: env("HOME_HTTP_ADDR", ":20180"), Handler: app.Routes(),
+	srv := &http.Server{Addr: env("HOME_HTTP_ADDR", ":20200"), Handler: app.Routes(),
 		ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second}
 	// The console-facing listener: TLS with an OpenPak-CA leaf (served with the CA), reached by Traefik
 	// passthrough on the HOME SNIs. Off until the hosts are known (docs/protocol.md).
 	if cert, k := os.Getenv("HOME_TLS_CERT"), os.Getenv("HOME_TLS_KEY"); cert != "" && k != "" {
-		tsrv := &http.Server{Addr: env("HOME_TLS_ADDR", ":20181"), Handler: srv.Handler,
+		tsrv := &http.Server{Addr: env("HOME_TLS_ADDR", ":21040"), Handler: srv.Handler,
 			ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 60 * time.Second}
 		go func() { log.Fatal(tsrv.ListenAndServeTLS(cert, k)) }()
 		log.Printf("pokemon-home TLS listening on %s", tsrv.Addr)
