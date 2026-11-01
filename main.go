@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	emit "github.com/openpak/rewards-emit"
 	"log"
 	"net/http"
 	"os"
@@ -62,6 +63,7 @@ func main() {
 		WonderDelay: envDur("HOME_WONDER_DELAY", 5*time.Minute), WonderSlots: envInt("HOME_WONDER_SLOTS", 3),
 		RoomMax: envInt("HOME_ROOM_MAX", 20), RoomTTL: envDur("HOME_ROOM_TTL", 24*time.Hour),
 		CaptureDir: os.Getenv("HOME_CAPTURE_DIR"),
+		Rewards:    emit.FromEnv("pokemon-home"),
 	}
 	go func() { // wonder pairing and room expiry
 		for range time.Tick(15 * time.Second) {

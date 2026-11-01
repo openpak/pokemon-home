@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	emit "github.com/openpak/rewards-emit"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgconn"
@@ -36,6 +37,15 @@ type App struct {
 	// Capture mode: unknown requests are recorded here (empty = off).
 	CaptureDir string
 	Now        func() time.Time
+	// Rewards reports completed trades to the rewards service; nil or disabled does nothing.
+	Rewards *emit.Client
+}
+
+// tradeDone tells rewards that account completed a trade. id must be stable per trade and
+// side; the GTS ids ("gts:<listing>:taker") match the ones pokemon-global-link sends, so a
+// trade seen by both services counts once.
+func (a *App) tradeDone(id, account string) {
+	a.Rewards.Event(emit.Event{ID: id, Metric: "trades_completed", Account: account})
 }
 
 func isUnique(err error) bool {

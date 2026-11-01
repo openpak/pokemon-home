@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -345,6 +346,7 @@ func (a *App) gtsTrade(w http.ResponseWriter, r *http.Request, id *Identity) {
 	if err == nil {
 		var m *Mon
 		if m, err = a.GTSTrade(r.Context(), id.AccountID, pid, pathID(r, "id"), in.PokemonID); err == nil {
+			a.tradeDone(fmt.Sprintf("gts:%d:taker", pathID(r, "id")), id.AccountID)
 			reply(w, 200, map[string]any{"received": m})
 			return
 		}
@@ -409,6 +411,7 @@ func (a *App) wonderCollect(w http.ResponseWriter, r *http.Request, id *Identity
 		httpErr(w, err)
 		return
 	}
+	a.tradeDone(fmt.Sprintf("home:wonder:%d", pathID(r, "id")), id.AccountID)
 	reply(w, 200, map[string]any{"received": m})
 }
 

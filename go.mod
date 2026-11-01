@@ -2,7 +2,10 @@ module github.com/openpak/pokemon-home
 
 go 1.26.0
 
-require github.com/jackc/pgx/v5 v5.12.0
+require (
+	github.com/jackc/pgx/v5 v5.12.0
+	github.com/openpak/rewards-emit v0.1.0
+)
 
 require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect

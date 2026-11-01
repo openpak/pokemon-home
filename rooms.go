@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -317,6 +318,10 @@ func (a *App) RoomAccept(ctx context.Context, acct, code string, tradeID int64) 
 		got, e = scanMon(t.QueryRow(ctx, `SELECT `+monCols+` FROM home_pokemon WHERE id=$1`, fromPk))
 		return e
 	})
+	if err == nil {
+		a.tradeDone(fmt.Sprintf("home:room:%d:a", tradeID), acct)
+		a.tradeDone(fmt.Sprintf("home:room:%d:b", tradeID), from)
+	}
 	return got, err
 }
 
