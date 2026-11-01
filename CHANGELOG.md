@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.2 - 2026-11-01
+
+- Completed trades (GTS taker, Wonder Box collect, both sides of a room trade) are reported to the rewards service (`REWARDS_EVENTS_URL` / `REWARDS_EVENTS_KEY`; unset = off).
+
 ## v0.1.1 - 2026-11-01
 
 - Port block 20200 (HTTP) and 21040 (console TLS): 20180 was already taken by rewards.
