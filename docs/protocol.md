@@ -40,3 +40,19 @@ Each item needs real traffic first (client RE playbook: measure before changing 
 Capture tools: Harbor/Eden guest TLS trace (only when the owner is not using the machine and a HOME copy exists),
 or a real Switch behind the OpenPak resolver and CA. When done, add handlers beside `/v1` in `api.go` that call
 the same `App` methods, so the legality gate cannot be skipped by a new protocol.
+
+## Service behaviour and limits
+
+- Clone prevention is weak: a Pokemon's identity is the SHA-256 of the stored bytes per account, so
+  a tweaked copy gets in twice. Proper identity (EC + PID + OT) needs `pokemon-legality`'s
+  `/v1/check` to return them. Judge needs IVs in the verdict from the same follow-up.
+- The GTS generation limit comes from global-link: a trade only matches within one generation.
+- A Pokemon handed over by global-link that this service's own gate then refuses (or cannot reach)
+  is parked as `unverified` and only enters a box after passing the gate.
+- Wonder Box ownership changes only when the receiving player collects, so nothing moves if they
+  never return.
+- Box counts are per deployment (`HOME_BOXES`); HOME's Basic/Premium plans are not modelled.
+- Pokemon Bank (3DS) is a separate 3DS service; an import endpoint for Bank-derived PK7 files would
+  go through the same gate. Not built.
+- The PKH encryption helper follows PKHeX's documented layout and is untested against a real HOME
+  file.

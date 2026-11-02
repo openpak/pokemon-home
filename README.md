@@ -32,7 +32,6 @@ HOME_TEST_DSN='postgres://...' GOWORK=off go test ./...   # tests need Postgres 
 - [API for the website and app](docs/api.md)
 - [Protocol and capture plan](docs/protocol.md)
 - [Deploy](docs/deploy.md)
-- [Notes](docs/notes.md)
 
 ## Licence
 

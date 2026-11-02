@@ -84,4 +84,4 @@ account id, and see each other's offered Pokemon (no box position).
 ## Not here
 
 Judge (needs IVs in the legality verdict), Battle Data and points, Pokemon Bank import, per-game transfer
-rules, plan tiers: see `docs/notes.md`.
+rules, plan tiers: see [protocol.md](protocol.md).
