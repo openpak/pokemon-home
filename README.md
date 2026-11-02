@@ -12,16 +12,11 @@ a legality gate on every Pokemon that enters.
 | Image | `ghcr.io/openpak/pokemon-home` |
 | Licence | AGPL-3.0-only |
 
-## Status
+## Behaviour
 
-| Part | State |
-| --- | --- |
-| JSON API (`/v1/*`): boxes, Pokedex, GTS, Wonder Box, Room trade | Shipped, tested against Postgres |
-| Account binding: Nintendo Account id token proved by nx-baas, or the website's trusted proxy | Shipped |
-| Legality gate on every deposit; fail closed | Shipped |
-| HOME container (PKH) envelope helper | Shipped, unverified against a real file |
-| The Switch HOME app's own wire protocol (hosts, session, sync, transfers) | **Not implemented: capture-gated.** See [protocol](docs/protocol.md). Unmatched requests are recorded (capture mode) and answered 501 |
-| Console DNS and certificates for HOME hosts | Prepared, **not applied**: the hosts are unknown. See [deploy](docs/deploy.md) |
+The Switch HOME app's own wire protocol (hosts, session, sync, transfers) is capture-gated, see
+[protocol](docs/protocol.md). Unmatched requests are recorded (capture mode) and answered 501.
+Console DNS and certificates for HOME hosts depend on the hosts being known, see [deploy](docs/deploy.md).
 
 ## Run
 
