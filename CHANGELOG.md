@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.0 - 2026-11-04
+
+- Account erasure (card #120): `DELETE /internal/accounts/{account_id}/data` with `Authorization: Bearer $ACCOUNT_ERASE_KEY` on the HTTP listener (`:20200`, container network; never on the console TLS listener). Unset key = 503, wrong or missing key = 401, non-UUID = 400. Answers `{"service":"pokemon-home","rows":N}` and logs one `account erased` line.
+- Erased: boxes, limbo and parked Pokemon, Pokedex, the GTS link and (through global-link, see `HOME_GL_ERASE_URL`) the open or traded GTS listing, Wonder Box entries, rooms the account hosts (members and trades go with them), room trades the account is on either side of, and the storage row with its global-link trainer id. Other players' Wonder entries that were paired with a deleted Pokemon go back to waiting. Idempotent.
+- Kept: nothing. Boxes are private storage, not published content: a Pokemon only leaves the account through a completed trade, and the copy the other player received is theirs.
+- New env `HOME_GL_ERASE_URL` (default `http://openpak-pokemon-global-link:9099`).
+
 ## v0.1.4 - 2026-11-04
 
 - Docs only (#111): README states that only the `/v1` API exists and the Switch HOME app's own protocol is unimplemented (501) until a console capture exists; tracked as its own capture-gated card.

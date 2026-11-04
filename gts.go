@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -18,6 +19,7 @@ import (
 // player's boxes and a listing.
 type GlobalLink struct {
 	URL, Key string
+	EraseURL string // global-link's erase listener (card #120)
 	Client   *http.Client
 }
 
@@ -48,17 +50,24 @@ type GLError struct {
 func (e *GLError) Error() string { return fmt.Sprintf("global-link %d: %s", e.Status, e.Msg) }
 
 func (g *GlobalLink) do(ctx context.Context, method, path string, in, out any) error {
+	return g.doAt(ctx, g.URL, method, path, in, out)
+}
+
+func (g *GlobalLink) doAt(ctx context.Context, base, method, path string, in, out any) error {
 	var rd io.Reader
 	if in != nil {
 		b, _ := json.Marshal(in)
 		rd = bytes.NewReader(b)
 	}
-	req, err := http.NewRequestWithContext(ctx, method, g.URL+path, rd)
+	req, err := http.NewRequestWithContext(ctx, method, base+path, rd)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-Internal-Key", g.Key)
+	if method == http.MethodDelete { // account erasure (card #120) is authorised by the shared erase key
+		req.Header.Set("Authorization", "Bearer "+os.Getenv("ACCOUNT_ERASE_KEY"))
+	}
 	cl := g.Client
 	if cl == nil {
 		cl = &http.Client{Timeout: 15 * time.Second}

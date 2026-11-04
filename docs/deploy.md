@@ -36,3 +36,9 @@ ceiling; nn-sssl-dns is restarted after a ceiling change. For HOME the host name
 
 A public `*.openpak.org` name for the JSON API is not needed (the website proxies); if wanted, point a tunnel
 hostname at `http://localhost:20200`.
+
+## Account erasure (card #120)
+
+`DELETE /internal/accounts/{account_id}/data`, header `Authorization: Bearer <ACCOUNT_ERASE_KEY>` (one shared key; unset means 503), on the plain HTTP listener `http://openpak-pokemon-home:20200` only. The console TLS listener does not serve it. Calls pokemon-global-link's erase listener first (`HOME_GL_ERASE_URL`, default `http://openpak-pokemon-global-link:9099`); if that fails nothing local is touched and the call can be repeated.
+
+Erased: boxes, limbo, Pokedex, GTS link and listing, Wonder Box entries, hosted rooms, room trades, the storage row. Kept: nothing (private storage; traded copies belong to the receiving player). Reply `{"service":"pokemon-home","rows":N}`; a second call returns 0.

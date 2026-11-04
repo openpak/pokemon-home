@@ -56,7 +56,8 @@ func main() {
 	app := &App{
 		DB:    db,
 		Check: &HTTPChecker{URL: env("HOME_LEGALITY_URL", "http://openpak-pokemon-legality:20170"), Key: os.Getenv("HOME_LEGALITY_KEY")},
-		GL:    &GlobalLink{URL: env("HOME_GL_URL", "http://openpak-pokemon-global-link:20160"), Key: os.Getenv("HOME_GL_KEY")},
+		GL: &GlobalLink{URL: env("HOME_GL_URL", "http://openpak-pokemon-global-link:20160"), Key: os.Getenv("HOME_GL_KEY"),
+			EraseURL: env("HOME_GL_ERASE_URL", "http://openpak-pokemon-global-link:9099")},
 		Auth: &Authenticator{InternalKey: key, NXURL: env("HOME_NX_URL", "http://openpak-nx-baas:20070"),
 			NXKey: os.Getenv("HOME_NX_KEY"), AppIDs: ids},
 		NumBoxes: envInt("HOME_BOXES", 200), SlotsPer: envInt("HOME_BOX_SLOTS", 30),
@@ -75,12 +76,12 @@ func main() {
 			}
 		}
 	}()
-	srv := &http.Server{Addr: env("HOME_HTTP_ADDR", ":20200"), Handler: app.Routes(),
+	srv := &http.Server{Addr: env("HOME_HTTP_ADDR", ":20200"), Handler: app.WithErase(app.Routes()),
 		ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 15 * time.Second, WriteTimeout: 30 * time.Second}
 	// The console-facing listener: TLS with an OpenPak-CA leaf (served with the CA), reached by Traefik
 	// passthrough on the HOME SNIs. Off until the hosts are known (docs/protocol.md).
 	if cert, k := os.Getenv("HOME_TLS_CERT"), os.Getenv("HOME_TLS_KEY"); cert != "" && k != "" {
-		tsrv := &http.Server{Addr: env("HOME_TLS_ADDR", ":21040"), Handler: srv.Handler,
+		tsrv := &http.Server{Addr: env("HOME_TLS_ADDR", ":21040"), Handler: app.Routes(),
 			ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 60 * time.Second}
 		go func() { log.Fatal(tsrv.ListenAndServeTLS(cert, k)) }()
 		log.Printf("pokemon-home TLS listening on %s", tsrv.Addr)
