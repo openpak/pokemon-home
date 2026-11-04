@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.4 - 2026-11-04
+
+- Docs only (#111): README states that only the `/v1` API exists and the Switch HOME app's own protocol is unimplemented (501) until a console capture exists; tracked as its own capture-gated card.
+
 ## v0.1.3 - 2026-11-03
 
 - rewards-emit v0.3.0: set `REWARDS_EMIT_DATABASE_URL` for a durable rewards outbox in Postgres. Player state was already in Postgres; the capture dir is research capture only.

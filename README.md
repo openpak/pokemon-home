@@ -14,8 +14,10 @@ a legality gate on every Pokemon that enters.
 
 ## Behaviour
 
-The Switch HOME app's own wire protocol (hosts, session, sync, transfers) is capture-gated, see
-[protocol](docs/protocol.md). Unmatched requests are recorded (capture mode) and answered 501.
+**Only the OpenPak-side API exists** (boxes, Pokedex, GTS, Wonder Box, Room trade under `/v1`, for the website and
+app). The Switch HOME app itself does not work against this service yet: its wire protocol (hosts, session, sync,
+transfers) has never been captured, see [protocol](docs/protocol.md). Unmatched requests are recorded (capture mode)
+and answered 501 so the first real console session documents the protocol.
 Console DNS and certificates for HOME hosts depend on the hosts being known, see [deploy](docs/deploy.md).
 
 ## Run
